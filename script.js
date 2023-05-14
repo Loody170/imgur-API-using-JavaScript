@@ -1,4 +1,4 @@
-const clientId = "ae46f54c86c85c3";
+const clientId = "b7d9543e5c1356a";
 
 var defaultAlbumId = '';
 
@@ -50,6 +50,46 @@ function requestAlbumFetch(){
   .catch(error => {
     console.error('Error:', error);
   });
-
-
 }
+
+async function callAPIUsingAsyncAwait(){
+    let albumId = document.getElementById("albumIdField").value;
+    try {
+        const response = await fetch(`https://api.imgur.com/3/album/${albumId}/images`, {
+          method: 'GET',
+          headers: {
+            Authorization: `Client-ID ${clientId}`
+          }
+        });
+      
+        if (!response.ok) {
+          throw new Error('Request failed');
+        }
+      
+        const data = await response.json();
+        return data;
+      } catch (error) {
+        console.error('Error:', error);
+        // Handle the error as needed
+      }
+    };
+
+    function requestAlbumAsyncAwait(){
+        let resultDiv = document.getElementById("result");
+        callAPIUsingAsyncAwait()
+        .then(data => {
+            // Process the data returned from the API
+            console.log(data);
+            for(item of data.data){
+                console.log(item)
+                let imgElem = document.createElement("img");
+                imgElem.src = item.link;
+                resultDiv.appendChild(imgElem);
+            }
+        });
+    }
+
+
+
+
+
